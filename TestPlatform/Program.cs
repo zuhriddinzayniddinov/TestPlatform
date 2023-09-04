@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApi(builder.Configuration);
 builder.Services.AddDomain(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddServices(builder.Configuration);
 builder.Services.AddTelegramBot(builder.Configuration);
 
