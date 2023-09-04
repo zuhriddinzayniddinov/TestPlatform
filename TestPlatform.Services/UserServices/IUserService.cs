@@ -7,6 +7,6 @@ public interface IUserService
 {
     ValueTask<UserDto> CreateUserAsync(UserForCreationDto userForCreationDto);
     IQueryable<UserDto> RetrieveUsers(QueryParameter queryParameter);
-    ValueTask<UserDto> RetrieveUserByIdAsync(Guid userId);
-    ValueTask<UserDto> RemoveUserAsync(Guid userId);
+    ValueTask<UserDto> RetrieveUserByIdAsync(long userId);
+    ValueTask<UserDto> RemoveUserAsync(long userId);
 }

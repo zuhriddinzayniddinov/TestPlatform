@@ -21,10 +21,8 @@ public class SignController : ControllerBase
         return "in";
     }
     [HttpPost]
-    public async ValueTask<ActionResult<UserDto>> Up([FromBody]UserForCreationDto userForCreationDto)
+    public string RefreshToken(string token)
     {
-        var userDto = await _userService.CreateUserAsync(userForCreationDto);
-
-        return Ok(userDto);
+        return "token";
     }
 }

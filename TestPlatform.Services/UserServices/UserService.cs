@@ -15,12 +15,12 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
-    public ValueTask<UserDto> RetrieveUserByIdAsync(Guid userId)
+    public ValueTask<UserDto> RetrieveUserByIdAsync(long userId)
     {
         throw new NotImplementedException();
     }
 
-    public ValueTask<UserDto> RemoveUserAsync(Guid userId)
+    public ValueTask<UserDto> RemoveUserAsync(long userId)
     {
         throw new NotImplementedException();
     }
