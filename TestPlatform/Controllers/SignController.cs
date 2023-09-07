@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TestPlatform.Services.DTOs.UserDTOs;
-using TestPlatform.Services.UserServices;
+using TestPlatform.Services.DTOs.AuthenticationDTOs;
 
 namespace TestPlatform.API.Controllers;
 
@@ -8,21 +7,26 @@ namespace TestPlatform.API.Controllers;
 [ApiController]
 public class SignController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly Services.Authentication.IAuthenticationService _authenticationService;
 
-    public SignController(IUserService userService)
+    public SignController(Services.Authentication.IAuthenticationService authenticationService)
     {
-        _userService = userService;
+        _authenticationService = authenticationService;
     }
 
     [HttpPost]
-    public string In([FromBody]UserForAccessDto userForAccessDto)
+    public async ValueTask<ActionResult<TokenDto>> In([FromBody]AuthenticationDto authenticationDto)
     {
-        return "in";
+        return Ok(await _authenticationService.LogInAsync(authenticationDto));
     }
     [HttpPost]
-    public string RefreshToken(string token)
+    public async ValueTask<ActionResult<TokenDto>> RefreshToken([FromBody]RefreshTokenDto refreshTokenDto)
     {
-        return "token";
+        return Ok(await _authenticationService.RefreshTokenAsync(refreshTokenDto));
+    }
+    [HttpPost]
+    public async ValueTask<ActionResult> Out([FromBody] RefreshTokenDto refreshTokenDto)
+    {
+        return Ok(await _authenticationService.LogOutAsync(refreshTokenDto));
     }
 }

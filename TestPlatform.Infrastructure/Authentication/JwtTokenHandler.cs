@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TestPlatform.Domain.Entities.Users;
 
@@ -11,18 +12,18 @@ public class JwtTokenHandler : IJwtTokenHandler
 {
     private readonly JwtOption jwtOption;
 
-    public JwtTokenHandler(JwtOption options)
+    public JwtTokenHandler(IOptions<JwtOption> options)
     {
-        this.jwtOption = options;
+        this.jwtOption = options.Value;
     }
-    public JwtSecurityToken GenerateAccessToken(User user)
+    public JwtSecurityToken GenerateAccessToken(User user, string deviceModel)
     {
         var claims = new List<Claim>()
         {
             new Claim(CustomClaimNames.Id, user.Id.ToString()),
             new Claim(CustomClaimNames.Email, user.Email),
             new Claim(CustomClaimNames.Username, user.Username),
-            new Claim(CustomClaimNames.Device, "..."),
+            new Claim(CustomClaimNames.Device, deviceModel),
         };
 
         var authSigningKey = new SymmetricSecurityKey(

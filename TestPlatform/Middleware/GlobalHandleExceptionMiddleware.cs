@@ -27,7 +27,8 @@ public class GlobalHandleExceptionMiddleware
         }
         catch (Exception e)
         {
-            _logger.Log(LogLevel.Error, message: e.Message, e);
+            _watch.Stop();
+            _logger.Log(LogLevel.Error, message: e.Message + " : " + _watch.ElapsedMilliseconds.ToString(), e);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 
 namespace TestPlatform.Domain.Entities.Users;
 
@@ -16,10 +17,10 @@ public class User
     [EmailAddress(ErrorMessage = "Invalid email")]
     public string Email { get; set; }
     [Required]
-    public DateTime CreateDate { get; } = DateTime.UtcNow;
+    public DateTime CreateDate { get; set; } = DateTime.UtcNow;
     [Required]
     public DateTime ModifyDate { get; set; } = DateTime.UtcNow;
     public string PasswordHash { get; set; }
-    public string Salt { get; } = Guid.NewGuid().ToString();
-    public string Phone { get; set; }
+    public string Salt { get; set; } = Guid.NewGuid().ToString();
+    public string? Phone { get; set; }
 }

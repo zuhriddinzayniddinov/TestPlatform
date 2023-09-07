@@ -1,8 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using TestPlatform.Infrastructure.Authentication;
 using TestPlatform.Infrastructure.Contexts;
+using TestPlatform.Infrastructure.Repositories.Tokens;
 using TestPlatform.Infrastructure.Repositories.Users;
+using TestPlatform.Services.Mappers;
 using TestPlatform.Services.UserServices;
 
 namespace TestPlatform.API.Extensions;
@@ -27,6 +31,9 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddScoped<Services.Authentication.IAuthenticationService, Services.Authentication.AuthenticationService>();
+        services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IUserService,UserService>();
 
         return services;
@@ -54,7 +61,8 @@ public static class ServiceCollectionExtensions
         services.Configure<JwtOption>(configuration
             .GetSection("JwtSettings"));
 
-        services.AddSingleton<JwtOption>();
+        services.AddScoped<IRefreshTokenRepository,RefreshTokenRepository>();
+        services.AddScoped<ITokenRepository,TokenRepository>();
         services.AddScoped<IUserRepository,UserRepository>();
         services.AddTransient<IPasswordHasher,PasswordHasher>();
         services.AddTransient<IJwtTokenHandler,JwtTokenHandler>();

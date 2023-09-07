@@ -7,7 +7,7 @@ namespace TestPlatform.Infrastructure.Repositories;
 public abstract class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey>
     where TEntity : class
 {
-    private readonly AppDbContext appDbContext;
+    public readonly AppDbContext appDbContext;
 
     public GenericRepository(AppDbContext appDbContext) =>
         this.appDbContext = appDbContext;

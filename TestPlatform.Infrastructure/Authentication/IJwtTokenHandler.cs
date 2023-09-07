@@ -5,6 +5,6 @@ namespace TestPlatform.Infrastructure.Authentication;
 
 public interface IJwtTokenHandler
 {
-    JwtSecurityToken GenerateAccessToken(User user);
+    JwtSecurityToken GenerateAccessToken(User user,string deviceModel);
     string GenerateRefreshToken();
 }
