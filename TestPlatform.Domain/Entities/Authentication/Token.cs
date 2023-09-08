@@ -13,4 +13,6 @@ public class Token
     public string Device { get; set; }
     [Required]
     public DateTime ExpireDate { get; set; }
+    [Required]
+    public DateTime LastActivity { get; set; } = DateTime.UtcNow;
 }

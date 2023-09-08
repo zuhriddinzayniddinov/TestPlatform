@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using Microsoft.EntityFrameworkCore;
 using TestPlatform.Domain.Entities.Authentication;
 using TestPlatform.Domain.Entities.Users;
 using TestPlatform.Domain.Exceptions;
@@ -45,7 +46,8 @@ public class AuthenticationService : IAuthenticationService
             Device = authenticationDto.deviceModel,
             UserId = user.Id,
             DeviceToken = new JwtSecurityTokenHandler().WriteToken(accessToken),
-            ExpireDate = accessToken.ValidTo
+            ExpireDate = accessToken.ValidTo,
+            LastActivity = DateTime.UtcNow
         });
 
         var refresh = await _refreshTokenRepository.InsertAsync(new RefreshToken()
@@ -101,5 +103,30 @@ public class AuthenticationService : IAuthenticationService
         await _tokenRepository.DeleteAsync(accessToken);
 
         return true;
+    }
+
+    public async ValueTask<int> AllLogOutAsync(RefreshTokenDto refreshTokenDto)
+    {
+        var token = await _tokenRepository.SelectByIdAsync(refreshTokenDto.accessToken);
+
+        var refreshToken = await _refreshTokenRepository.SelectByIdAsync(refreshTokenDto.refreshToken);
+
+        var user = await _userRepository.SelectByIdAsync(token.UserId);
+
+        var tokens = await _tokenRepository.SelectAll().Where(t => t.UserId == user.Id).ToListAsync();
+
+        var refreshTokens = await _refreshTokenRepository.SelectAll().Where(t => t.UserId == user.Id).ToListAsync();
+
+        foreach (var item in tokens.Where(item => token != item))
+        {
+            await _tokenRepository.DeleteAsync(item);
+        }
+
+        foreach (var item in refreshTokens.Where(item => refreshToken != item))
+        {
+            await _refreshTokenRepository.DeleteAsync(item);
+        }
+
+        return tokens.Count - 1;
     }
 }

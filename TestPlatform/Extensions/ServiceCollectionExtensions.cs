@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using TestPlatform.Infrastructure.Authentication;
 using TestPlatform.Infrastructure.Contexts;
 using TestPlatform.Infrastructure.Repositories.Tokens;
@@ -18,6 +19,7 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         services.AddSingleton<Stopwatch>();
+        services.AddSwaggerService();
 
         return services;
     }
@@ -74,5 +76,37 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         return services;
+    }
+
+    private static void AddSwaggerService(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "TestPlatform.Api", Version = "v1" });
+
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Description =
+                    "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
+            });
+        });
     }
 }
