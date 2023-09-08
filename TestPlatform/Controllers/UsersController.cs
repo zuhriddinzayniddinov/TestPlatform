@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TestPlatform.API.CustomAuthorize;
 using TestPlatform.Services.DTOs.UserDTOs;
 using TestPlatform.Services.Models;
 using TestPlatform.Services.UserServices;
@@ -29,7 +30,7 @@ public class UsersController : ControllerBase
         return Created("", createdUser);
     }
 
-    [AllowAnonymous]
+    [CustomAuthorize]
     [HttpGet]
     public IActionResult GetUsers(
         [FromQuery] QueryParameter queryParameter)
@@ -39,7 +40,7 @@ public class UsersController : ControllerBase
 
         return Ok(users);
     }
-
+    [CustomAuthorize]
     [HttpGet("{userId:long}")]
     public async ValueTask<ActionResult<UserDto>> GetUserByIdAsync(
         long userId)
@@ -49,7 +50,7 @@ public class UsersController : ControllerBase
 
         return Ok(user);
     }
-
+    [CustomAuthorize]
     [HttpDelete("{userId:long}")]
     public async ValueTask<ActionResult<UserDto>> DeleteUserAsync(
         long userId)
