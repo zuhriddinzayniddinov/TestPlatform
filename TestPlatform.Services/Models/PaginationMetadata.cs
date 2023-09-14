@@ -15,18 +15,6 @@ internal class PaginationMetadata
     public int TotalCount { get; set; }
     public int CurrentPage { get; set; }
     public int PageCount { get; set; }
-    public bool HasNextPage
-    {
-        get
-        {
-            return CurrentPage < PageCount;
-        }
-    }
-    public bool HasPreviousPage
-    {
-        get
-        {
-            return CurrentPage > 1 && CurrentPage <= PageCount + 1;
-        }
-    }
+    public bool HasNextPage => CurrentPage < PageCount;
+    public bool HasPreviousPage => CurrentPage > 1 && CurrentPage <= PageCount + 1;
 }

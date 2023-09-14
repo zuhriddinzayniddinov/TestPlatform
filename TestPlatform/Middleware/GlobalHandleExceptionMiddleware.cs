@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net;
 
 namespace TestPlatform.API.Middleware;
 
@@ -29,6 +30,8 @@ public class GlobalHandleExceptionMiddleware
         {
             _watch.Stop();
             _logger.Log(LogLevel.Error, message: e.Message + " : " + _watch.ElapsedMilliseconds.ToString(), e);
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            context.Response.Headers.Add("Error", e.Message);
         }
     }
 }

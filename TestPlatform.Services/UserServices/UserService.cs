@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.IdentityModel.Tokens;
 using TestPlatform.Domain.Entities.Users;
 using TestPlatform.Domain.Exceptions;
 using TestPlatform.Infrastructure.Authentication;

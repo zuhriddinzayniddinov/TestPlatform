@@ -1,6 +1,7 @@
 ﻿namespace TestPlatform.Services.DTOs.UserDTOs;
 
 public record UserForCreationDto(
-    string? username,
+    string? firstname,
+    string? lastname,
     string? password,
     string? email);

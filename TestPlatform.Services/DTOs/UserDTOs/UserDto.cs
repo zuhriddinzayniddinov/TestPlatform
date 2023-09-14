@@ -2,5 +2,6 @@
 
 public record UserDto(
     long id,
-    string username,
+    string firstname,
+    string lastname,
     string email);

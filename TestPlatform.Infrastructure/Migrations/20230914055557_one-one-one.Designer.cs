@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TestPlatform.Infrastructure.Contexts;
 
 #nullable disable
@@ -12,8 +12,8 @@ using TestPlatform.Infrastructure.Contexts;
 namespace TestPlatform.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230908052712_Token added last active column")]
-    partial class Tokenaddedlastactivecolumn
+    [Migration("20230914055557_one-one-one")]
+    partial class oneoneone
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,18 +21,18 @@ namespace TestPlatform.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("TestPlatform.Domain.Entities.Authentication.RefreshToken", b =>
                 {
                     b.Property<string>("DeviceRefreshToken")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Device")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -45,17 +45,17 @@ namespace TestPlatform.Infrastructure.Migrations
             modelBuilder.Entity("TestPlatform.Domain.Entities.Authentication.Token", b =>
                 {
                     b.Property<string>("DeviceToken")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Device")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ExpireDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("LastActivity")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -71,34 +71,39 @@ namespace TestPlatform.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("ModifyDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Salt")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

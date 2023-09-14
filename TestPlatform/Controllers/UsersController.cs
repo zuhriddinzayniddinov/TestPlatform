@@ -30,6 +30,7 @@ public class UsersController : ControllerBase
         return Created("", createdUser);
     }
 
+    [Authorize]
     [CustomAuthorize]
     [HttpGet]
     public IActionResult GetUsers(
@@ -40,6 +41,7 @@ public class UsersController : ControllerBase
 
         return Ok(users);
     }
+    [Authorize]
     [CustomAuthorize]
     [HttpGet("{userId:long}")]
     public async ValueTask<ActionResult<UserDto>> GetUserByIdAsync(
@@ -50,6 +52,7 @@ public class UsersController : ControllerBase
 
         return Ok(user);
     }
+    [Authorize]
     [CustomAuthorize]
     [HttpDelete("{userId:long}")]
     public async ValueTask<ActionResult<UserDto>> DeleteUserAsync(

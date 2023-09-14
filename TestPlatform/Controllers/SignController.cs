@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TestPlatform.API.CustomAuthorize;
 using TestPlatform.Services.DTOs.AuthenticationDTOs;
 
@@ -25,12 +26,14 @@ public class SignController : ControllerBase
     {
         return Ok(await _authenticationService.RefreshTokenAsync(refreshTokenDto));
     }
+    [Authorize]
     [CustomAuthorize]
     [HttpDelete]
     public async ValueTask<ActionResult> Out([FromBody]RefreshTokenDto refreshTokenDto)
     {
         return Ok(await _authenticationService.LogOutAsync(refreshTokenDto));
     }
+    [Authorize]
     [CustomAuthorize]
     [HttpDelete]
     public async ValueTask<ActionResult<int>> AllOut([FromBody] RefreshTokenDto refreshTokenDto)

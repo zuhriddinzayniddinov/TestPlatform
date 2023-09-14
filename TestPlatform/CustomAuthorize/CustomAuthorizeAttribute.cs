@@ -34,7 +34,7 @@ public class AuthorizeActionFilter : IAsyncActionFilter
 
         var entityToken = await _tokenRepository.SelectByIdAsync(accestoken);
 
-        if (entityToken == null)
+        if (entityToken == null || entityToken.ExpireDate < DateTime.UtcNow)
         {
             context.HttpContext.Response.StatusCode = 401;
             return;

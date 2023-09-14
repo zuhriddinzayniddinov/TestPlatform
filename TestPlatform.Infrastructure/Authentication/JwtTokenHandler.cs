@@ -22,7 +22,8 @@ public class JwtTokenHandler : IJwtTokenHandler
         {
             new Claim(CustomClaimNames.Id, user.Id.ToString()),
             new Claim(CustomClaimNames.Email, user.Email),
-            new Claim(CustomClaimNames.Username, user.Username),
+            new Claim(CustomClaimNames.FirstName, user.FirstName),
+            new Claim(CustomClaimNames.LastName, user.LastName),
             new Claim(CustomClaimNames.Device, deviceModel),
         };
 

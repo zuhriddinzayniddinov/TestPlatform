@@ -1,13 +1,13 @@
-﻿using System;
-using System.Diagnostics;
-using AutoMapper;
+﻿using System.Diagnostics;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TestPlatform.Infrastructure.Authentication;
 using TestPlatform.Infrastructure.Contexts;
 using TestPlatform.Infrastructure.Repositories.Tokens;
 using TestPlatform.Infrastructure.Repositories.Users;
-using TestPlatform.Services.Mappers;
 using TestPlatform.Services.UserServices;
 
 namespace TestPlatform.API.Extensions;
@@ -44,11 +44,11 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("PostgresSQL");
+        var connectionString = configuration.GetConnectionString("MSSQLServer");
 
         services.AddDbContextPool<AppDbContext>(options =>
         {
-            options.UseNpgsql(connectionString, sqlServerOptions =>
+            options.UseSqlServer(connectionString, sqlServerOptions =>
             {
                 sqlServerOptions.EnableRetryOnFailure();
             });
@@ -68,6 +68,35 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserRepository,UserRepository>();
         services.AddTransient<IPasswordHasher,PasswordHasher>();
         services.AddTransient<IJwtTokenHandler,JwtTokenHandler>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddAuthentication(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddAuthorization();
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = configuration["JwtSettings:Issuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(configuration["JwtSettings:SecretKey"])),
+                ClockSkew = TimeSpan.Zero
+            };
+        });
 
         return services;
     }
