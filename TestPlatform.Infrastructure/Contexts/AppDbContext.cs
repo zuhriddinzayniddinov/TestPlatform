@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using TestPlatform.Domain.Entities.Authentication;
+using TestPlatform.Domain.Entities.Sciences;
 using TestPlatform.Domain.Entities.Users;
 
 namespace TestPlatform.Infrastructure.Contexts;
@@ -21,4 +22,6 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Token> Tokens { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<ScienceTypes> Sciences { get; set; }
+    public DbSet<Science> ScienceTypes { get; set; }
 }
