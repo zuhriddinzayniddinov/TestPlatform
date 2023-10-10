@@ -6,8 +6,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TestPlatform.Infrastructure.Authentication;
 using TestPlatform.Infrastructure.Contexts;
+using TestPlatform.Infrastructure.Repositories.Sciences;
+using TestPlatform.Infrastructure.Repositories.Sciences.Types;
 using TestPlatform.Infrastructure.Repositories.Tokens;
 using TestPlatform.Infrastructure.Repositories.Users;
+using TestPlatform.Services.ScienceServices;
 using TestPlatform.Services.UserServices;
 
 namespace TestPlatform.API.Extensions;
@@ -37,6 +40,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IUserService,UserService>();
+        services.AddScoped<IScienceServices,ScienceServices>();
 
         return services;
     }
@@ -68,6 +72,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserRepository,UserRepository>();
         services.AddTransient<IPasswordHasher,PasswordHasher>();
         services.AddTransient<IJwtTokenHandler,JwtTokenHandler>();
+        services.AddScoped<IScienceTypeRepository,ScienceTypeRepository>();
+        services.AddScoped<IScienceRepository,ScienceRepository>();
 
         return services;
     }

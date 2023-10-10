@@ -12,4 +12,7 @@ public interface IScienceServices
     IQueryable<ScienceTypeDto> RetrieveScienceTypes();
     ValueTask<ScienceTypeDto> RetrieveScienceTypeByIdAsync(long id);
     ValueTask<ScienceTypeDto> RemoveScienceTypeAsync(long id);
+    IQueryable<ScienceDto> RetrieveByCountSciences(int count);
+    IQueryable<ScienceTypeDto> RetrieveByNameScienceTypes(string name);
+    IQueryable<ScienceDto> RetrieveByNameSciences(string name);
 }

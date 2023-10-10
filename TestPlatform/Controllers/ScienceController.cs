@@ -73,22 +73,19 @@ namespace TestPlatform.API.Controllers
         [HttpGet("{name}")]
         public IActionResult GetScienceByNames(string name)
         {
-            return Ok(_scienceServices.RetrieveSciences()
-                .Where(s => s.name.Contains(name)));
+            return Ok(_scienceServices.RetrieveByNameSciences(name));
         }
         
         [HttpGet("{name}")]
         public IActionResult GetScienceTypeByNames(string name)
         {
-            return Ok(_scienceServices.RetrieveScienceTypes()
-                .Where(st => st.name.Contains(name)));
+            return Ok(_scienceServices.RetrieveByNameScienceTypes(name));
         }
         
         [HttpGet("{count:int}")]
         public IActionResult GetScienceQuizCount(int count)
         {
-            return Ok(_scienceServices.RetrieveSciences()
-                .Where(s => s.countQuizzes >= count));
+            return Ok(_scienceServices.RetrieveByCountSciences(count));
         }
     }
 }

@@ -123,4 +123,41 @@ public class ScienceServices : IScienceServices
             scienceType.Name,
             scienceType.PhotoUrl);
     }
+
+    public IQueryable<ScienceDto> RetrieveByCountSciences(int count)
+    {
+        return _scienceRepository
+            .SelectAll()
+            .Where(s => s.CountQuizzes >= count)
+            .Select(s => 
+                new ScienceDto(
+                    s.Id,
+                    s.ScienceTypesId,
+                    s.UserId,
+                    s.CountQuizzes,
+                    s.Name,
+                    s.PhotoUrl));
+    }
+
+    public IQueryable<ScienceTypeDto> RetrieveByNameScienceTypes(string name)
+    {
+        return _scienceTypeRepository.SelectAll()
+            .Where(st => st.Name.Contains(name))
+            .Select(st => new ScienceTypeDto(st.Id, st.Name, st.PhotoUrl));
+    }
+
+    public IQueryable<ScienceDto> RetrieveByNameSciences(string name)
+    {
+        return _scienceRepository
+            .SelectAll()
+            .Where(s => s.Name.Contains(name))
+            .Select(s => 
+                new ScienceDto(
+                    s.Id,
+                    s.ScienceTypesId,
+                    s.UserId,
+                    s.CountQuizzes,
+                    s.Name,
+                    s.PhotoUrl));
+    }
 }
