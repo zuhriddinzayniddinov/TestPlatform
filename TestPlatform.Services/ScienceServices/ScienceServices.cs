@@ -174,7 +174,7 @@ public class ScienceServices : IScienceServices
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
         
-        scienceType.PhotoUrl = $"Asset/{filePath}";
+        scienceType.PhotoUrl = filePath;
 
         path = Path.Combine(path, filePath);
 

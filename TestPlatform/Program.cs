@@ -24,12 +24,7 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
-    RequestPath = "/Asset"
-});
+app.UseStaticFiles();
 
 app.UseAuthorization();
 
