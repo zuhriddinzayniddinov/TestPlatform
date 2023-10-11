@@ -27,6 +27,9 @@ public class UserService : IUserService
     public async ValueTask<UserDto> CreateUserAsync(UserForCreationDto userForCreationDto)
     {
         var user = _mapper.Map<UserForCreationDto,User>(userForCreationDto);
+        var userBase = await _userRepository.SelectByEmailAsync(userForCreationDto.email);
+        if (userBase is not null)
+            throw new RegisteredException($"Registered Email: {userForCreationDto.email}");
         user.PasswordHash = _passwordHasher.Encrypt(userForCreationDto.password, user.Salt);
         user = await _userRepository.InsertAsync(user);
         return _mapper.Map<User,UserDto>(user);

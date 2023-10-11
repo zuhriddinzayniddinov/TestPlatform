@@ -160,4 +160,31 @@ public class ScienceServices : IScienceServices
                     s.Name,
                     s.PhotoUrl));
     }
+
+    public async ValueTask<ScienceTypeDto> AddPhotoScienceAsync(AddPhotoDto addPhotoDto)
+    {
+        var scienceType = await _scienceTypeRepository.SelectByIdAsync(addPhotoDto.scienceTypeId);
+
+        var filePath = Guid.NewGuid() + Path.GetExtension(addPhotoDto.file.FileName);
+        
+        var path = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "wwwroot");
+        
+        if (!Directory.Exists(path))
+            Directory.CreateDirectory(path);
+        
+        scienceType.PhotoUrl = $"Asset/{filePath}";
+
+        path = Path.Combine(path, filePath);
+
+        await using (Stream fileStream = new FileStream(path, FileMode.Create))
+        {
+            await  addPhotoDto.file.CopyToAsync(fileStream);
+        }
+
+        scienceType = await _scienceTypeRepository.UpdateAsync(scienceType);
+        
+        return new ScienceTypeDto(scienceType.Id, scienceType.Name, scienceType.PhotoUrl);
+    }
 }

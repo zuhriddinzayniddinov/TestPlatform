@@ -87,5 +87,10 @@ namespace TestPlatform.API.Controllers
         {
             return Ok(_scienceServices.RetrieveByCountSciences(count));
         }
+        [HttpPost]
+        public async Task<IActionResult> AddPhoto([FromForm]AddPhotoDto addPhotoDto)
+        {
+            return Ok(await _scienceServices.AddPhotoScienceAsync(addPhotoDto));
+        }
     }
 }

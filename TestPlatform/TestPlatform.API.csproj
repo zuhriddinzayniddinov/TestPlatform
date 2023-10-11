@@ -30,4 +30,8 @@
     <ProjectReference Include="..\TestPlatform.Services\TestPlatform.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

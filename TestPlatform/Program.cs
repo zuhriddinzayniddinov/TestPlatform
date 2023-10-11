@@ -1,3 +1,4 @@
+using Microsoft.Extensions.FileProviders;
 using TestPlatform.API.Extensions;
 using TestPlatform.API.Middleware;
 
@@ -22,6 +23,13 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
+    RequestPath = "/Asset"
+});
 
 app.UseAuthorization();
 
