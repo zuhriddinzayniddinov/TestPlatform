@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using TestPlatform.Domain.Entities.Authentication;
+using TestPlatform.Domain.Entities.Quizzes;
 using TestPlatform.Domain.Entities.Sciences;
 using TestPlatform.Domain.Entities.Users;
 
@@ -24,4 +25,5 @@ public class AppDbContext : DbContext
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<ScienceTypes> Sciences { get; set; }
     public DbSet<Science> ScienceTypes { get; set; }
+    public DbSet<Quiz> Quizzes { get; set; }
 }
