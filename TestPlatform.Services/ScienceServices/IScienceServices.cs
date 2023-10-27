@@ -15,5 +15,6 @@ public interface IScienceServices
     IQueryable<ScienceDto> RetrieveByCountSciences(int count);
     IQueryable<ScienceTypeDto> RetrieveByNameScienceTypes(string name);
     IQueryable<ScienceDto> RetrieveByNameSciences(string name);
-    ValueTask<ScienceTypeDto> AddPhotoScienceAsync(AddPhotoDto addPhotoDto);
+    ValueTask<ScienceTypeDto> AddPhotoScienceTypeAsync(AddPhotoDto addPhotoDto);
+    ValueTask<ScienceDto> AddPhotoScienceAsync(AddPhotoDto addPhotoDto);
 }

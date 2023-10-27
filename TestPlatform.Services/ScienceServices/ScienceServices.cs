@@ -161,9 +161,9 @@ public class ScienceServices : IScienceServices
                     s.PhotoUrl));
     }
 
-    public async ValueTask<ScienceTypeDto> AddPhotoScienceAsync(AddPhotoDto addPhotoDto)
+    public async ValueTask<ScienceTypeDto> AddPhotoScienceTypeAsync(AddPhotoDto addPhotoDto)
     {
-        var scienceType = await _scienceTypeRepository.SelectByIdAsync(addPhotoDto.scienceTypeId);
+        var scienceType = await _scienceTypeRepository.SelectByIdAsync(addPhotoDto.id);
 
         var filePath = Guid.NewGuid() + Path.GetExtension(addPhotoDto.file.FileName);
         
@@ -186,5 +186,38 @@ public class ScienceServices : IScienceServices
         scienceType = await _scienceTypeRepository.UpdateAsync(scienceType);
         
         return new ScienceTypeDto(scienceType.Id, scienceType.Name, scienceType.PhotoUrl);
+    }
+
+    public async ValueTask<ScienceDto> AddPhotoScienceAsync(AddPhotoDto addPhotoDto)
+    {
+        var science = await _scienceRepository.SelectByIdAsync(addPhotoDto.id);
+
+        var filePath = Guid.NewGuid() + Path.GetExtension(addPhotoDto.file.FileName);
+        
+        var path = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            "wwwroot");
+        
+        if (!Directory.Exists(path))
+            Directory.CreateDirectory(path);
+        
+        science.PhotoUrl = filePath;
+
+        path = Path.Combine(path, filePath);
+
+        await using (Stream fileStream = new FileStream(path, FileMode.Create))
+        {
+            await  addPhotoDto.file.CopyToAsync(fileStream);
+        }
+
+        science = await _scienceRepository.UpdateAsync(science);
+        
+        return new ScienceDto(
+            science.Id,
+            science.ScienceTypesId,
+            science.UserId,
+            science.CountQuizzes,
+            science.Name,
+            science.PhotoUrl);
     }
 }

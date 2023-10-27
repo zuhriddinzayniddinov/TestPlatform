@@ -10,8 +10,10 @@ public class QuizInExam
     [Key] public long Id { get; set; }
     [ForeignKey(nameof(Exam))] public long ExamId { get; set; }
     [ForeignKey(nameof(Quiz))] public long QuizId { get; set; }
-    public QuizInExamStatus QuizStatus { get; set; } = QuizInExamStatus.Open;
-    public DateTime CreateAt { get; set; }
+    public int QuizStatus { get; set; } = 0;
+    public int Order { get; set; }
+    public DateTime CreateAt { get; set; } = DateTime.Now;
+    public string? Question { get; set; }
     public string? Answer1 { get; set; }
     public string? AnswerGuid1 { get; set; }
     public string? Answer2 { get; set; }

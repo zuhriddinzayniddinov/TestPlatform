@@ -6,11 +6,14 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TestPlatform.Infrastructure.Authentication;
 using TestPlatform.Infrastructure.Contexts;
+using TestPlatform.Infrastructure.Repositories.Exams.Exam;
+using TestPlatform.Infrastructure.Repositories.Exams.Quiz;
 using TestPlatform.Infrastructure.Repositories.Quizzes;
 using TestPlatform.Infrastructure.Repositories.Sciences;
 using TestPlatform.Infrastructure.Repositories.Sciences.Types;
 using TestPlatform.Infrastructure.Repositories.Tokens;
 using TestPlatform.Infrastructure.Repositories.Users;
+using TestPlatform.Services.ExamServices;
 using TestPlatform.Services.QuizServices;
 using TestPlatform.Services.ScienceServices;
 using TestPlatform.Services.UserServices;
@@ -44,6 +47,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserService,UserService>();
         services.AddScoped<IScienceServices,ScienceServices>();
         services.AddScoped<IQuizServices, QuizServices>();
+        services.AddScoped<IExamService, ExamService>();
 
         return services;
     }
@@ -78,6 +82,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IScienceTypeRepository,ScienceTypeRepository>();
         services.AddScoped<IScienceRepository,ScienceRepository>();
         services.AddScoped<IQuizRepository, QuizRepository>();
+        services.AddScoped<IExamRepository, ExamRepository>();
+        services.AddScoped<IQuizInExamRepository, QuizInExamRepository>();
 
         return services;
     }
@@ -103,7 +109,7 @@ public static class ServiceCollectionExtensions
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = configuration["JwtSettings:Issuer"],
                 IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(configuration["JwtSettings:SecretKey"])),
+                    Encoding.UTF8.GetBytes(configuration["JwtSettings:SecretKey"] ?? string.Empty)),
                 ClockSkew = TimeSpan.Zero
             };
         });
