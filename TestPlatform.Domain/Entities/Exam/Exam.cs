@@ -11,5 +11,5 @@ public class Exam
     [ForeignKey(nameof(User))] public long UserId { get; set; }
     [ForeignKey(nameof(Science))] public long ScienceId { get; set; }
     public DateTime CreateAt { get; set; } = DateTime.Now;
-    public DateTime CloseAt { get; set; }
+    public DateTime CloseAt { get; set; } = DateTime.Now;
 }

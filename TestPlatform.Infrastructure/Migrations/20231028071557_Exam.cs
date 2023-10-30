@@ -5,7 +5,7 @@
 namespace TestPlatform.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class oxirgi1 : Migration
+    public partial class Exam : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

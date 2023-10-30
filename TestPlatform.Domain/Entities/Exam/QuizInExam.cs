@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TestPlatform.Domain.Entities.Quizzes;
-using TestPlatform.Domain.Enums;
 
 namespace TestPlatform.Domain.Entities.Exam;
 
@@ -13,6 +12,7 @@ public class QuizInExam
     public int QuizStatus { get; set; } = 0;
     public int Order { get; set; }
     public DateTime CreateAt { get; set; } = DateTime.Now;
+    public DateTime FinishAt { get; set; }
     public string? Question { get; set; }
     public string? Answer1 { get; set; }
     public string? AnswerGuid1 { get; set; }

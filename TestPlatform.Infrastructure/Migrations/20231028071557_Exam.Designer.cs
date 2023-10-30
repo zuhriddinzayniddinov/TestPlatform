@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestPlatform.Infrastructure.Contexts;
 
@@ -11,9 +12,11 @@ using TestPlatform.Infrastructure.Contexts;
 namespace TestPlatform.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231028071557_Exam")]
+    partial class Exam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,92 +67,6 @@ namespace TestPlatform.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Tokens");
-                });
-
-            modelBuilder.Entity("TestPlatform.Domain.Entities.Exam.Exam", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("CloseAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("ScienceId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Exams");
-                });
-
-            modelBuilder.Entity("TestPlatform.Domain.Entities.Exam.QuizInExam", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Answer1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Answer2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Answer3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Answer4")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AnswerGuid1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AnswerGuid2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AnswerGuid3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AnswerGuid4")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("ExamId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("FinishAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("GivenGuid")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Question")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("QuizId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("QuizStatus")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("QuizInExams");
                 });
 
             modelBuilder.Entity("TestPlatform.Domain.Entities.Quizzes.Quiz", b =>

@@ -56,6 +56,20 @@ public class ExamService : IExamService
     {
         var exam = await _examRepository.SelectByIdAsync(getQuizInExamDto.examId);
 
+        if (getQuizInExamDto.presentQuizId is not null and not 0)
+        {
+            var quizInExamOld = await _quizInExamRepository.SelectByIdAsync(getQuizInExamDto.presentQuizId ?? 0);
+            quizInExamOld.GivenGuid = getQuizInExamDto.answer;
+            quizInExamOld.FinishAt = DateTime.Now;
+            var quizOld = await _quizRepository.SelectByIdAsync(quizInExamOld.QuizId);
+            if (quizOld.CorrectGuid.ToString() == quizInExamOld.GivenGuid)
+                quizInExamOld.QuizStatus = 1;
+
+            quizInExamOld = await _quizInExamRepository.UpdateAsync(quizInExamOld);
+            exam.CloseAt = DateTime.Now;
+            exam = await _examRepository.UpdateAsync(exam);
+        }
+
         var quiz = await _quizRepository.SelectAll()
             .Where(q => q.ScienceId == exam.ScienceId)
             .Skip(getQuizInExamDto.presentOrder)

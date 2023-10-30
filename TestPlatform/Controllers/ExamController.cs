@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TestPlatform.Services.DTOs.ExamDTOs;
 using TestPlatform.Services.ExamServices;
 
 namespace TestPlatform.API.Controllers
@@ -15,9 +16,40 @@ namespace TestPlatform.API.Controllers
         }
 
         [HttpPost]
-        public async ValueTask<IActionResult> Create([FromBody] long scienceId)
+        public async ValueTask<IActionResult> Create([FromBody]ExamForCreationDto examForCreationDto)
         {
-            return Ok(scienceId);
+            return Created("",await _examService.CreateAsync(examForCreationDto));
+        }
+
+        [HttpGet]
+        public async ValueTask<IActionResult> GetExams(long userId)
+        {
+            return Ok(await _examService.GetExamsOfUserAsync(userId));
+        }
+
+        [HttpGet]
+        public async ValueTask<IActionResult> GetHistoryExam(long examId)
+        {
+            return Ok(await _examService.GetSolvedQuizzesOfExamAsync(examId));
+        }
+
+        [HttpGet]
+        public async ValueTask<IActionResult> GetResultExam(long examId)
+        {
+            return Ok(await _examService.GetResultExamAsync(examId));
+        }
+
+        [HttpPost]
+        public async ValueTask<IActionResult> QuizOrResult([FromBody] GetQuizInExamDto getQuizInExamDto)
+        {
+            try
+            {
+                return Ok(await _examService.FirstOrNextQuizAsync(getQuizInExamDto));
+            }
+            catch (NullReferenceException e)
+            {
+                return Ok(await _examService.GetResultExamAsync(getQuizInExamDto.examId));
+            }
         }
     }
 }
